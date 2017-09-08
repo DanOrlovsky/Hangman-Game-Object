@@ -41,7 +41,7 @@ var hangmanGame = {
     keySound: new Audio('./assets/sounds/typewriter-key.wav'),              //  Holds the sound for a keypress
     winSound: new Audio('./assets/sounds/you-win.wav'),                     //  Holds the winningiest sound
     loseSound: new Audio('./assets/sounds/you-lose.wav'),                   //  Holds the most loser of all sounds
-    
+    wrongKey: new Audio('./assets/sounds/wrong-key.mp3'),
     // resetGame() function
     // resets all of our game variables.  Should be ran first.
     resetGame: function () {
@@ -102,10 +102,12 @@ var hangmanGame = {
             // Make sure we didn't use this letter yet
             if (this.guessedLetters.indexOf(letter) === -1) {
                 this.guessedLetters.push(letter);
+                this.keySound.play();
                 this.evaluateGuess(letter);
+            } else {
+                this.wrongKey.play();
             }
         }
-        this.keySound.play();
         this.checkWinLose();
         this.updateDisplay();
     },
@@ -145,12 +147,14 @@ var hangmanGame = {
             this.winSound.play();
             // Flag we're done with the game
             this.hasFinished = true;
+            return;
         }
         if (this.remainingGuesses <= 0) {
             this.loseSound.play();
             document.getElementById("gameover-image").style.cssText = "display: block";
             document.getElementById("pressKeyTryAgain").style.cssText = "display:block";
             this.hasFinished = true;
+            return;
         }
     },
 };
@@ -171,6 +175,8 @@ document.onkeydown = function (event) {
         // Check to make sure a-z was pressed.
         if (isLetter(event.keyCode)) {
             hangmanGame.makeGuess(event.key.toUpperCase());
+        } else {
+            hangmanGame.wrongKey.play();
         }
     }
 };
