@@ -30,24 +30,29 @@ const totalMaxTries = 10; // Maximum number of tries player has
 
 // Hangman game object
 var hangmanGame = {
-    wordList: masterWordList,           //  Holds the word list, this can be any array of strings
-    guessingWord: [],                   //  Holds the characters we've guessed right
-    guessedLetters: [],                 //  Holds the unique letters we've guessed
-    currentWord: "",                    //  Holds the current word we're guessing from the wordList
-    wins: 0,                            //  Total wins
-    maxTries: totalMaxTries,            //  Max tries, front const above
-    remainingGuesses: 0,                //  Remaining guesses, zero it out.
-    hasFinished: true,                  //  If we've either won or loss
-    keySound: new Audio('./assets/sounds/typewriter-key.wav'),              //  Holds the sound for a keypress
-    winSound: new Audio('./assets/sounds/you-win.wav'),                     //  Holds the winningiest sound
-    loseSound: new Audio('./assets/sounds/you-lose.wav'),                   //  Holds the most loser of all sounds
+    wordList: masterWordList,       //  Holds the word list, this can be any array of strings
+guessingWord: [],                   //  Holds the characters we've guessed right
+    guessedLetters: [],             //  Holds the unique letters we've guessed
+    currentWord: "",                //  Holds the current word we're guessing from the wordList
+    lastWordIdx: -1,                //  Holds the last word index, so we don't pick the same word twice in a row 
+    wins: 0,                        //  Total wins
+    maxTries: totalMaxTries,        //  Max tries, front const above
+    remainingGuesses: 0,            //  Remaining guesses, zero it out.
+    hasFinished: true,              //  If we've either won or loss
+    keySound: new Audio('./assets/sounds/typewriter-key.wav'), //  Holds the sound for a keypress
+    winSound: new Audio('./assets/sounds/you-win.wav'), //  Holds the winningiest sound
+    loseSound: new Audio('./assets/sounds/you-lose.wav'), //  Holds the most loser of all sounds
     wrongKey: new Audio('./assets/sounds/wrong-key.mp3'),
     // resetGame() function
     // resets all of our game variables.  Should be ran first.
     resetGame: function () {
-        // Randomly grabs a new work
-        this.currentWord = this.wordList[Math.floor(Math.random() * this.wordList.length)];
-
+        var idx = -1;
+        do  {
+            idx = Math.floor(Math.random() * this.wordList.length);
+        } while(idx === this.lastWordIdx)
+        this.currentWord = this.wordList[idx];
+        this.lastWordIdx = idx;
+        
         // Zero out our working arrays.  guessingWord builds our working string, 
         // guessedLetters holds all letters guessed.
         this.guessingWord = [];
@@ -161,7 +166,7 @@ var hangmanGame = {
 
 // isLetter(keyCode)
 // Check if the keyCode falls between A-Z
-function isLetter(keyCode){ 
+function isLetter(keyCode) {
     return (keyCode >= 65 && keyCode <= 90);
 }
 
