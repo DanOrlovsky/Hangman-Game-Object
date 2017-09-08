@@ -158,7 +158,6 @@ var hangmanGame = {
 // isLetter(keyCode)
 // Check if the keyCode falls between A-Z
 function isLetter(keyCode){ 
-    console.log(keyCode);
     return (keyCode >= 65 && keyCode <= 90);
 }
 
