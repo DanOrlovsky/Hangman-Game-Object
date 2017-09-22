@@ -20,7 +20,7 @@ var masterWordList = // Word list
         "COMPILER",
         "ALGORITHM",
         "QBASIC",
-        "ASPNET",
+        "ASP NET",
         "FRAMEWORK",
     ];
 
@@ -74,8 +74,8 @@ var hangmanGame = {
         for (var i = 0; i < len; i++) {
             
             if(this.currentWord[i] === " ") {
-            } else {
                 this.guessingWord.push(space);
+            } else {
                 this.guessingWord.push("_");
             }
         }
