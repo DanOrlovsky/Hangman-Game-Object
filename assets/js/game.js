@@ -8,15 +8,15 @@
 
 var masterWordList = // Word list
     [
-        "CSHARP",
-        "CPLUSPLUS",
-        "RUBYONRAILS",
+        "CSHARP",   
+        "C PLUS PLUS",
+        "RUBY ON RAILS",
         "PYTHON",
         "JAVASCRIPT",
-        "ANSIC",
+        "ANSI C",
         "COBOL",
         "FORTRAN",
-        "VISUALBASIC",
+        "VISUAL BASIC",
         "COMPILER",
         "ALGORITHM",
         "QBASIC",
@@ -25,13 +25,14 @@ var masterWordList = // Word list
     ];
 
 const totalMaxTries = 10; // Maximum number of tries player has
+const space = "space";
 // Updates the image depending on how many guesses
 
 
 // Hangman game object
 var hangmanGame = {
     wordList: masterWordList,       //  Holds the word list, this can be any array of strings
-guessingWord: [],                   //  Holds the characters we've guessed right
+    guessingWord: [],                   //  Holds the characters we've guessed right
     guessedLetters: [],             //  Holds the unique letters we've guessed
     currentWord: "",                //  Holds the current word we're guessing from the wordList
     lastWordIdx: -1,                //  Holds the last word index, so we don't pick the same word twice in a row 
@@ -39,9 +40,9 @@ guessingWord: [],                   //  Holds the characters we've guessed right
     maxTries: totalMaxTries,        //  Max tries, front const above
     remainingGuesses: 0,            //  Remaining guesses, zero it out.
     hasFinished: true,              //  If we've either won or loss
-    keySound: new Audio('./assets/sounds/typewriter-key.wav'), //  Holds the sound for a keypress
-    winSound: new Audio('./assets/sounds/you-win.wav'), //  Holds the winningiest sound
-    loseSound: new Audio('./assets/sounds/you-lose.wav'), //  Holds the most loser of all sounds
+    keySound: new Audio('./assets/sounds/typewriter-key.wav'),      //  Holds the sound for a keypress
+    winSound: new Audio('./assets/sounds/you-win.wav'),             //  Holds the winningiest sound
+    loseSound: new Audio('./assets/sounds/you-lose.wav'),           //  Holds the most loser of all sounds
     wrongKey: new Audio('./assets/sounds/wrong-key.mp3'),
     // resetGame() function
     // resets all of our game variables.  Should be ran first.
@@ -50,6 +51,7 @@ guessingWord: [],                   //  Holds the characters we've guessed right
         do  {
             idx = Math.floor(Math.random() * this.wordList.length);
         } while(idx === this.lastWordIdx)
+        
         this.currentWord = this.wordList[idx];
         this.lastWordIdx = idx;
         
@@ -66,11 +68,16 @@ guessingWord: [],                   //  Holds the characters we've guessed right
 
         // Make sure the hangman image is cleared
         document.getElementById("hangmanImage").src = "";
-
+        
         // Build the guessing word and populate with underscores
         var len = this.currentWord.length;
         for (var i = 0; i < len; i++) {
-            this.guessingWord.push("_");
+            
+            if(this.currentWord[i] === " ") {
+            } else {
+                this.guessingWord.push(space);
+                this.guessingWord.push("_");
+            }
         }
 
         // Hide game over and win images/text
@@ -89,9 +96,13 @@ guessingWord: [],                   //  Holds the characters we've guessed right
         // What we have so far of the currentword
         var tempWord = "";
         for (var i = 0; i < this.guessingWord.length; i++) {
-            tempWord += this.guessingWord[i];
+            if(this.guessingWord[i] === space) {
+                tempWord += "&nbsp;";
+            } else {
+                tempWord += this.guessingWord[i];
+            }
         }
-        document.getElementById("currentWord").innerText = tempWord;
+        document.getElementById("currentWord").innerHTML = tempWord;
         document.getElementById("remainingGuesses").innerText = this.remainingGuesses;
         document.getElementById("guessedLetters").innerText = this.guessedLetters;
     },
